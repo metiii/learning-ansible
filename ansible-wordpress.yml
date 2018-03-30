@@ -8,6 +8,10 @@
      apt_repository: repo='ppa:ondrej/php'
    - name: Update the apt cache
      apt: update_cache=yes cache_valid_time=3600
+   - name: Install required tools
+     apt: name={{item}} state=installed
+     with_items:
+      - unzip
 # PHP
    - name: Install PHP
      apt: name={{item}} state=installed
@@ -48,6 +52,22 @@
    - name: Create nginx config
      template: src=templates/nginx/default dest=/etc/nginx/sites-available/default
      notify: restart nginx
+# Wordpress
+   - name: Copy wordpress.zip into tmp
+     copy: src=/vagrant/provisioning/files/wordpress.zip dest=/tmp/wordpress.zip
+   - name: Unzip WordPress
+     unarchive: src=/tmp/wordpress.zip dest=/tmp copy=no creates=/tmp/wordpress/wpsettings.php
+   - name: Create project folder
+     file: dest=/var/www/book.example.com state=directory
+   - name: Copy WordPress files
+     command: cp -a /tmp/wordpress/. /var/www/book.example.com #creates:=/var/www/book.example.com/wp-settings.php
+   - name: Create WordPress MySQL database
+     mysql_db: name=wordpress state=present
+   - name: Create WordPress MySQL user
+     mysql_user: name=wordpress host=localhost password=bananas priv=wordpress.*:ALL
+   - name: Create wp-config
+     template: src=/vagrant/provisioning/templates/wordpress/wp-config.php dest=/var/www/book.example.com/wpconfig.php
+##############################
   handlers:
    - name: restart nginx
-     service: name=nginx state=restarted
+     servict: name=nginx state=restarted
