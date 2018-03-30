@@ -1,3 +1,9 @@
+Learning Ansible
+I used the git project listed below to practice what is in the book "Ansible: Beginner to Pro".
+I have made some chages just to get things running, but the heavy listing has been done by nyu-devops and can be found at: https://github.com/nyu-devops/lab-ansible. 
+Many thinks to those indivduals that worked this project. It has make my learning easier. 
+
+
 # lab-ansible
 This repository is part of lab for the *NYU DevOps* class for Fall 2017, [CSCI-GA.3033-013](http://cs.nyu.edu/courses/fall17/CSCI-GA.3033-014/) on using Ansible for Configuration Management.
 
