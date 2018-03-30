@@ -1,0 +1,11 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+   - name: Install required packages
+     apt: name={{item}} state=latest state=build-dep update_cache=yes
+     with_items:
+      - php
+      - php-mysql
+      - nginx
+      - mysql-server
