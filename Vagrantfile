@@ -73,6 +73,10 @@ Vagrant.configure("2") do |config|
       # Add the other servers to the hosts file as if we had a DNS
       sudo echo "192.168.33.20   web1" >> /etc/hosts
       sudo echo "192.168.33.30   db1" >> /etc/hosts
+      sudo touch /home/vagrant/.ssh/config
+      sudo chown vagrant:vagrant /home/vagrant/.ssh/config
+      sudo cat /vagrant/keys/config >> /home/vagrant/.ssh/config
+      sudo chmod 600 /home/vagrant/.ssh/config
       # Make vi look nice
       sudo -H -u ubuntu echo "colorscheme desert" > ~/.vimrc
     SHELL

@@ -66,8 +66,19 @@
    - name: Create WordPress MySQL user
      mysql_user: name=wordpress host=localhost password=bananas priv=wordpress.*:ALL
    - name: Create wp-config
-     template: src=/vagrant/provisioning/templates/wordpress/wp-config.php dest=/var/www/book.example.com/wpconfig.php
+     template: src=/vagrant/provisioning/templates/wordpress/wp-config.php dest=/var/www/book.example.com/wp-config.php
+   - name: Does the database exist?
+     command: mysql -u root wordpress -e "SELECT ID FROM wordpress.wp_users LIMIT 1;"
+     register: db_exist
+     ignore_errors: true
+  - name: Copy WordPress DB
+    copy: src=files/wp-database.sql dest=/tmp/wp-database.sql
+    when: db_exist.rc > 0
+  - name: Import WordPress DB
+    mysql_db: target=/tmp/wp-database.sql state=import name=wordpress
+    when: db_exist.rc > 0 
+
 ##############################
   handlers:
    - name: restart nginx
-     servict: name=nginx state=restarted
+     service: name=nginx state=restarted
