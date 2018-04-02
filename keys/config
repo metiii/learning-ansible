@@ -1,0 +1,6 @@
+Host web
+Hostname 192.168.33.20
+IdentityFile /home/vagrant/.ssh/id_rsa
+Host db
+Hostname 192.168.33.30
+IdentityFile /home/vagrant/.ssh/id_rsa
