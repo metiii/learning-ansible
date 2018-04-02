@@ -18,7 +18,7 @@
      with_items:
       - php
       - php7.0-fpm
-      - php-mysql
+      - php7.0-mysql
       - php-xml
    - name: Remove apache2
      apt: name=apache2 state=removed
