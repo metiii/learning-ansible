@@ -7,9 +7,6 @@
   gather_facts: false
   become: yes
   pre_tasks:
-    - name: do an apt-get update
-      apt:
-        update_cache: yes
     - name: Check if python is installed
       raw: test -e /usr/bin/python
       register: python_installed
