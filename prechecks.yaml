@@ -16,7 +16,7 @@
       raw: (apt-get -y update && apt-get install -y python)
       when: python_installed.rc != 0
     - name: Installing Python development environment
-      hosts: all
+      #hosts: all
       become: yes
       apt: package={{ item }}  update_cache=yes
       with_items:
@@ -32,9 +32,7 @@
       apt:
         name: aptitude
         state: present
-      any_errors_fatal: true
-      max_fail_percentage: 0
     - name: Performing Package Maintenance on All nodes
-      hosts: all
       apt: upgrade=full update_cache=yes
-
+  any_errors_fatal: true
+  max_fail_percentage: 0
