@@ -17,7 +17,7 @@
      apt: name={{item}} state=installed
      with_items:
       - php
-      - php-fpm
+      - php7.0-fpm
       - php-mysql
       - php-xml
    - name: Remove apache2
@@ -71,12 +71,12 @@
      command: mysql -u root wordpress -e "SELECT ID FROM wordpress.wp_users LIMIT 1;"
      register: db_exist
      ignore_errors: true
-  - name: Copy WordPress DB
-    copy: src=files/wp-database.sql dest=/tmp/wp-database.sql
-    when: db_exist.rc > 0
-  - name: Import WordPress DB
-    mysql_db: target=/tmp/wp-database.sql state=import name=wordpress
-    when: db_exist.rc > 0 
+   - name: Copy WordPress DB
+     copy: src=/vagrant/provisioning/files/wp-database.sql dest=/tmp/wp-database.sql
+     when: db_exist.rc > 0
+   - name: Import WordPress DB
+     mysql_db: target=/tmp/wp-database.sql state=import name=wordpress
+     when: db_exist.rc > 0 
 
 ##############################
   handlers:
