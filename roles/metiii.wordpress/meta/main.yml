@@ -1,0 +1,6 @@
+dependencies:
+- metiii.python
+- metiii.common
+- metiii.php
+- metiii.mysql
+- metiii.nginx

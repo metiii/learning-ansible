@@ -1,0 +1,36 @@
+---
+# tasks file for metiii.python
+- name: Ensure connectivity to all nodes
+  hosts: all
+  gather_facts: false
+  become: yes
+  pre_tasks:
+    - name: Check if python is installed
+      raw: test -e /usr/bin/python
+      register: python_installed
+      changed_when: false
+      failed_when: false
+    - name: Install python
+      raw: (apt-get -y update && apt-get install -y python)
+      when: python_installed.rc != 0
+    - name: Installing Python development environment
+      #hosts: all
+      become: yes
+      apt: package={{ item }}  update_cache=yes
+      with_items:
+        - git
+        - python-pip
+        - python-dev
+        - build-essential
+  tasks:
+    - name: Ansible setup
+      action: setup
+      tags: ['ping']
+    - name: Ensure that aptitude is installed
+      apt:
+        name: aptitude
+        state: present
+    - name: Performing Package Maintenance on All nodes
+      apt: upgrade=full update_cache=yes
+  any_errors_fatal: true
+  max_fail_percentage: 0
