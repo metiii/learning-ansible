@@ -1,12 +1,17 @@
 ---
-- name: do an apt-get update
-  apt:
-    update_cache: yes
+- name: Check if python is installed
+  raw: test -e /usr/bin/python
+  register: python_installed
+  changed_when: false
+  failed_when: false
 - name: Install python
-  apt:
-    name: python2.7
-    state: present
-- name: Ensure that aptitude is installed
-  apt:
-    name: aptitude
-    state: present
+  raw: (apt-get -y update && apt-get install -y python)
+  when: python_installed.rc != 0
+- name: Installing Python development environment
+  become: yes
+  apt: package={{ item }}  update_cache=yes
+  with_items:
+    - git
+    - python-pip
+    - python-dev
+    - build-essential
