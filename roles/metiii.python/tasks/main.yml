@@ -7,11 +7,17 @@
 - name: Install python
   raw: (apt-get -y update && apt-get install -y python)
   when: python_installed.rc != 0
-- name: Installing Python development environment
-  become: yes
+- name: install required packages for Python using the apt module
   apt: package={{ item }}  update_cache=yes
   with_items:
     - git
     - python-pip
     - python-dev
     - build-essential
+- name: Ensure that aptitude is installed
+  apt:
+    name: aptitude
+    state: present
+- name: Update and upgrade local packages
+  apt: upgrade=full update_cache=yes
+
